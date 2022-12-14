@@ -7,12 +7,39 @@ use dbName;
 //List all collections in DB
 show collections;
 
-//List all documents in a collections
+//List all documents in a collections - GET
 db.collectionName.find()
+db.users.find({age: 21, name: 'DhivyaChetan', age: 22})
+db.users.find({$and: [{age: {$gt: 15}}, {name: 'Nitish'}]})
+db.users.find({$and: [{age: {$gt: 5}}, {age: {$lt: 15}}]})
+db.users.find({$or: [{age: {$lt: 15}}, {age: null}]})
+
+db.users.find({age: {$gt : 5}}) //$gte, $lt, $lte
+db.users.find().limit(2)
+db.users.find().skip(2).limit(2)
 
 //Create Empty Collection
 db.createCollection("Shows")
 
-//Insert One document in a collection
+//Insert One document in a collection - POST
 db.collectionName.insertOne({name: 'Bala', address: 'mumbai'})
 
+//Insert more than one document in a collection - POST
+db.collectionName.insertMany([{}, {}, {}....])
+
+//Update one document -PUT
+db.collectionName.updateOne( {condition}, {updatedData})
+//Add/Edit a key in a document
+db.users.updateOne({address: 'delhi'}, {$set: {age: 21}})
+
+//Delete a key
+db.users.updateOne({_id: ObjectId("6398b2b8a0a6272b7f196c42") }, {$unset: {address: 1}})
+
+//Update Many - PUT
+db.users.updateMany({address: 'delhi'}, {$set: {age: 25, phone: "98342353"}})
+
+//Delete documents - DELETE
+db.users.deleteMany({age: 25})
+db.users.deleteOne({age: 25})
+
+DB operations are expensive - time
