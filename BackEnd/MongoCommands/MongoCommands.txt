@@ -1,0 +1,18 @@
+//List all DBs
+show databases;
+
+//Select & Create a particular DBs
+use dbName;
+
+//List all collections in DB
+show collections;
+
+//List all documents in a collections
+db.collectionName.find()
+
+//Create Empty Collection
+db.createCollection("Shows")
+
+//Insert One document in a collection
+db.collectionName.insertOne({name: 'Bala', address: 'mumbai'})
+
