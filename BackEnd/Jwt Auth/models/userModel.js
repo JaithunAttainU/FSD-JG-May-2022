@@ -16,7 +16,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minLength: 4
-  }
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
+  // roles: [{
+  //   type: String,
+  //   enum: ["STUDENTS", 'TC', 'INSTRUCTORS']
+  // }]
 })
 
 const UserModel = mongoose.model('users', userSchema)

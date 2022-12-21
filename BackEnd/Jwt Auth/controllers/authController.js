@@ -1,7 +1,8 @@
 const UserModel = require("../models/userModel")
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
-const SECRET_KEY = 'shhhhhh'
+const SECRET_KEY = 'shhhhhh' //Envinronment Variables
 
 const signup = async (req, res) => {
   const { name, email, password, confirmPassword } = req.body
@@ -10,7 +11,10 @@ const signup = async (req, res) => {
     if (password != confirmPassword) {
       res.status(400).send({ status: 'error', msg: "Password/Confirm Password are not same" })
     }
-    const newUser = await UserModel.create({ name, email, password })
+
+    const hashedPassword = await bcrypt.hash(password, 5)
+
+    const newUser = await UserModel.create({ name, email, password: hashedPassword })
     res.status(200).send({ status: 'success', user: { name: newUser.name, email: newUser.email } })
   } catch (error) {
     res.status(500).send({ status: 'error', error, msg: "Internal Server Error" })
@@ -21,18 +25,19 @@ const login = async (req, res) => {
   const { email, password } = req.body
 
   try {
-    const loggedInUser = await UserModel.findOne({ email }, { email: 1, password: 1 })
+    const loggedInUser = await UserModel.findOne({ email }, { email: 1, password: 1, isAdmin: 1 })
     if (!loggedInUser) {
       res.status(404).send({ status: 'error', msg: "User not found" })
       return
     }
 
-    if (loggedInUser.password !== password) {
+    const isPasswordMatch = await bcrypt.compare(password, loggedInUser.password)
+    if (!isPasswordMatch) {
       res.status(400).send({ status: 'error', msg: "Password Incorrect" })
       return
     }
 
-    const userPayload = { email }
+    const userPayload = { email, isAdmin: loggedInUser.isAdmin }
     //Generate the token
     const token = jwt.sign(userPayload, SECRET_KEY, { algorithm: 'HS384', expiresIn: '1d' })
     console.log(token)
@@ -52,5 +57,6 @@ const logout = (req, res) => {
 module.exports = {
   signup,
   login,
-  logout
+  logout,
+  SECRET_KEY
 }
