@@ -28,7 +28,7 @@ const getMoviesByID = async(req, res) => {
   const {movieID} = req.params //{ movieID: '639b4bfaf5b417f9399c0f3e' }
 
   try {
-    const movie = await MovieModel.findById(movieID)
+    const movie = await MovieModel.findById(movieID).populate('reviews', { comment: 1, like: 1, postedOn: 1, _id: 0 })
     if(movie) {
       res.status(200).send({status: 'success', movie})
     } else {

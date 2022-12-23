@@ -37,7 +37,11 @@ const movieSchema = new Schema({
     default: Date.now()
   },
   cast: [String],
-  is3d: Boolean
+  is3d: Boolean,
+  reviews: [{ //One - to - Many
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'reviews'
+  }]
 })
 
 //Map mongodb collection to the schema above. .model will return a obj using which u can perform all db operations
