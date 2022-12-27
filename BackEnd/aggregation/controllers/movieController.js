@@ -3,23 +3,37 @@ const MovieModel = require('../models/movieModel')
 const getMovies = async (req, res) => {
   try {
     // const movies = await MovieModel.find()
-    const { year, title } = req.query
+    const { year, title, pageSize = 10, pageNum = 1 } = req.query
 
     //Grouping
     // [{ year: 2010, movieCount: 7 }, { year: 1913, movieCount: 11 }, { year: 2000, movieCount: 4 }]
 
-    const movies = await MovieModel.aggregate([{
-      $group: {
-        _id: "$year",
-        movieCount: {
-          $sum: 1
+    // const movies = await MovieModel.aggregate([{
+    //   $group: {
+    //     _id: "$year",
+    //     movieCount: {
+    //       $sum: 1
+    //     }
+    //   }
+    // },
+    // {
+    //   $sort: {
+    //     movieCount: 1
+    //   }
+    // }])
+
+    //Pagination
+    console.log(pageNum, pageSize)
+    const movies = await MovieModel.aggregate([
+      {
+        $project: {
+          title: 1
         }
-      }
+      }, {
+        $skip: Number(pageSize) * (Number(pageNum) - 1)
     },
     {
-      $sort: {
-        movieCount: 1
-      }
+      $limit: Number(pageSize)
     }])
 
     // const movies = await MovieModel.aggregate([
@@ -63,7 +77,7 @@ const getMovies = async (req, res) => {
     res.status(200).send({ status: 'success', movies })
   } catch (error) {
     console.log("Error fetching movies from DB")
-    res.status(500).send({ status: 'error', msg: "Error fetching movies from DB" })
+    res.status(500).send({ status: 'error', msg: "Error fetching movies from DB", error })
   }
 }
 
