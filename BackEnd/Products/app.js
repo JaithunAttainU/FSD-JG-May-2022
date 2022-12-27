@@ -1,6 +1,9 @@
 const express = require('express')
 const connectToDB = require('./dbConfig')
 const productRouter = require('./routes/productRouter')
+const dotenv = require('dotenv')
+//Read all env variables from .env file and attach it to ur process.env obj
+dotenv.config()
 const app = express()
 
 //JSON data & Form Data
