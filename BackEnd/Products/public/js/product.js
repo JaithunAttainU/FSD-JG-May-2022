@@ -38,6 +38,9 @@ async function getProducts() {
       const product = products[index];
       const liEle = document.createElement('li')
       liEle.innerText = `Name: ${product.name} Price: ${product.price}`
+      if (product.imageUrl) {
+        liEle.innerHTML = `Name: ${product.name} Price: ${product.price} <img src=${product.imageUrl} width=200 height=200/>`
+      }
       productListEle.append(liEle)
     }
   }
