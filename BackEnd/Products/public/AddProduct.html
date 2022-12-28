@@ -11,7 +11,7 @@
 
 <body>
   <h1>Add Product</h1>
-  <!-- <form method="post" action="/products"> -->
+  <form method="post" action="/products" enctype="multipart/form-data">
   <div>
     <label for="name">Product Name:</label>
     <input type="text" id="name" name="name" required>
@@ -25,10 +25,14 @@
     <input type="number" id="price" name="price" required min="1">
   </div>
   <div>
-    <button type="submit" onclick="addProduct()">Add Product</button>
-    <!-- <input type="submit" onsubmit="" /> -->
-  </div>
-  <!-- </form> -->
+    <label for="image">Product Image :</label>
+    <input type="file" id="image" name="image">
+    </div>
+    <div>
+      <!-- <button type="submit" onclick="addProduct()">Add Product</button> -->
+      <input type="submit" />
+    </div>
+    </form>
 </body>
 
 </html>

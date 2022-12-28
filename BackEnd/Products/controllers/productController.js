@@ -1,9 +1,15 @@
 const ProductModel = require("../models/ProductModel")
-
+const Base64 = require('js-base64')
 const addProduct = async (req, res) => {
   const productData = req.body
 
-  console.log(productData)
+  if (req.files && Object.keys(req.files).length > 0) {
+    const fileData = req.files.image
+    console.log(fileData)
+
+    const base64EncodedData = Base64.encode(fileData.data)
+    console.log(base64EncodedData.substring(0, 25))
+  }
   try {
     const newProductData = await ProductModel.create(productData)
     res.send({ status: 'success', product: newProductData })
