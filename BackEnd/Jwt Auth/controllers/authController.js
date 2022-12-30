@@ -42,7 +42,7 @@ const login = async (req, res) => {
     const token = jwt.sign(userPayload, SECRET_KEY, { algorithm: 'HS384', expiresIn: '1d' })
     console.log(token)
 
-    res.cookie('jwt', token)
+    res.cookie('jwt', token, { maxAge: 24 * 60 * 60 })
     res.send({ status: 'success', msg: 'User Logged in Successfully' })
 
   } catch (error) {
@@ -51,7 +51,8 @@ const login = async (req, res) => {
 }
 
 const logout = (req, res) => {
-
+  res.cookie('jwt', '', { maxAge: 1 })
+  res.send({ status: 'success', msg: 'Logged Out Successfully' })
 }
 
 module.exports = {

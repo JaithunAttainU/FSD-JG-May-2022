@@ -1,3 +1,9 @@
+const nameInputEle = document.getElementById('name')
+nameInputEle.value = localStorage.getItem('name')
+nameInputEle.addEventListener('keypress', (event) => {
+  localStorage.setItem('name', event.target.value)
+})
+
 
 async function addProduct() {
   const name = document.getElementById('name').value
@@ -44,4 +50,8 @@ async function getProducts() {
       productListEle.append(liEle)
     }
   }
+}
+
+function addDataToLocalStore(event) {
+  console.log(event)
 }
